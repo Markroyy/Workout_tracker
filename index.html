@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -608,6 +609,61 @@
             flex-wrap: wrap;
         }
 
+        .last-workout-reference {
+            background: rgba(6, 182, 212, 0.1);
+            border: 1px solid rgba(6, 182, 212, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .last-workout-header {
+            font-size: 0.85rem;
+            color: #67e8f9;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .last-workout-sets {
+            font-size: 0.8rem;
+            color: #9ca3af;
+            line-height: 1.6;
+        }
+
+        .last-workout-sets div {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .last-workout-badge {
+            background: rgba(6, 182, 212, 0.2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            color: #67e8f9;
+        }
+
+        .copy-last-btn {
+            background: rgba(6, 182, 212, 0.2);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            color: #67e8f9;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.3s ease;
+            margin-left: auto;
+        }
+
+        .copy-last-btn:hover {
+            background: rgba(6, 182, 212, 0.3);
+            border-color: rgba(6, 182, 212, 0.6);
+        }
+
         .chart-container {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 12px;
@@ -741,6 +797,22 @@
             .workout-stats {
                 flex-direction: column;
                 gap: 8px;
+            }
+            
+            .last-workout-reference {
+                padding: 10px;
+            }
+            
+            .last-workout-header {
+                flex-wrap: wrap;
+                font-size: 0.8rem;
+            }
+            
+            .copy-last-btn {
+                margin-left: 0;
+                margin-top: 4px;
+                padding: 6px 12px;
+                font-size: 0.75rem;
             }
         }
 
@@ -907,49 +979,208 @@
             'use strict';
 
             const EXERCISES = [
-                {name: "Push-ups", muscle: "Chest", equipment: "Bodyweight"},
-                {name: "Bench Press", muscle: "Chest", equipment: "Barbell"},
-                {name: "Incline Bench Press", muscle: "Chest", equipment: "Barbell"},
-                {name: "Dumbbell Press", muscle: "Chest", equipment: "Dumbbells"},
+                // Chest Exercises
+                {name: "Barbell Bench Press", muscle: "Chest", equipment: "Barbell"},
+                {name: "Incline Barbell Bench Press", muscle: "Chest", equipment: "Barbell"},
+                {name: "Decline Barbell Bench Press", muscle: "Chest", equipment: "Barbell"},
+                {name: "Dumbbell Bench Press", muscle: "Chest", equipment: "Dumbbells"},
+                {name: "Incline Dumbbell Press", muscle: "Chest", equipment: "Dumbbells"},
+                {name: "Decline Dumbbell Press", muscle: "Chest", equipment: "Dumbbells"},
                 {name: "Dumbbell Flyes", muscle: "Chest", equipment: "Dumbbells"},
-                {name: "Cable Flyes", muscle: "Chest", equipment: "Cable"},
+                {name: "Incline Dumbbell Flyes", muscle: "Chest", equipment: "Dumbbells"},
+                {name: "Cable Crossovers", muscle: "Chest", equipment: "Cable"},
+                {name: "Low Cable Crossovers", muscle: "Chest", equipment: "Cable"},
+                {name: "High Cable Crossovers", muscle: "Chest", equipment: "Cable"},
                 {name: "Chest Dips", muscle: "Chest", equipment: "Bodyweight"},
+                {name: "Push-ups", muscle: "Chest", equipment: "Bodyweight"},
+                {name: "Wide Grip Push-ups", muscle: "Chest", equipment: "Bodyweight"},
+                {name: "Diamond Push-ups", muscle: "Chest", equipment: "Bodyweight"},
+                {name: "Decline Push-ups", muscle: "Chest", equipment: "Bodyweight"},
+                {name: "Pec Deck Machine", muscle: "Chest", equipment: "Machine"},
+                {name: "Machine Chest Press", muscle: "Chest", equipment: "Machine"},
+                {name: "Landmine Press", muscle: "Chest", equipment: "Barbell"},
+                {name: "Svend Press", muscle: "Chest", equipment: "Dumbbells"},
+
+                // Back Exercises
+                {name: "Conventional Deadlift", muscle: "Back", equipment: "Barbell"},
+                {name: "Romanian Deadlift", muscle: "Back", equipment: "Barbell"},
+                {name: "Sumo Deadlift", muscle: "Back", equipment: "Barbell"},
+                {name: "Trap Bar Deadlift", muscle: "Back", equipment: "Trap Bar"},
                 {name: "Pull-ups", muscle: "Back", equipment: "Bodyweight"},
                 {name: "Chin-ups", muscle: "Back", equipment: "Bodyweight"},
+                {name: "Wide Grip Pull-ups", muscle: "Back", equipment: "Bodyweight"},
+                {name: "Neutral Grip Pull-ups", muscle: "Back", equipment: "Bodyweight"},
+                {name: "Weighted Pull-ups", muscle: "Back", equipment: "Bodyweight"},
                 {name: "Lat Pulldowns", muscle: "Back", equipment: "Cable"},
-                {name: "Deadlifts", muscle: "Back", equipment: "Barbell"},
-                {name: "Romanian Deadlifts", muscle: "Back", equipment: "Barbell"},
-                {name: "Bent Over Rows", muscle: "Back", equipment: "Barbell"},
-                {name: "Dumbbell Rows", muscle: "Back", equipment: "Dumbbells"},
+                {name: "Wide Grip Lat Pulldowns", muscle: "Back", equipment: "Cable"},
+                {name: "Close Grip Lat Pulldowns", muscle: "Back", equipment: "Cable"},
+                {name: "Bent Over Barbell Rows", muscle: "Back", equipment: "Barbell"},
+                {name: "Pendlay Rows", muscle: "Back", equipment: "Barbell"},
+                {name: "T-Bar Rows", muscle: "Back", equipment: "T-Bar"},
+                {name: "Single Arm Dumbbell Rows", muscle: "Back", equipment: "Dumbbells"},
+                {name: "Two Arm Dumbbell Rows", muscle: "Back", equipment: "Dumbbells"},
+                {name: "Chest Supported Rows", muscle: "Back", equipment: "Dumbbells"},
                 {name: "Seated Cable Rows", muscle: "Back", equipment: "Cable"},
+                {name: "Single Arm Cable Rows", muscle: "Back", equipment: "Cable"},
                 {name: "Face Pulls", muscle: "Back", equipment: "Cable"},
-                {name: "Squats", muscle: "Legs", equipment: "Bodyweight"},
-                {name: "Back Squats", muscle: "Legs", equipment: "Barbell"},
-                {name: "Front Squats", muscle: "Legs", equipment: "Barbell"},
-                {name: "Bulgarian Split Squats", muscle: "Legs", equipment: "Bodyweight"},
-                {name: "Lunges", muscle: "Legs", equipment: "Bodyweight"},
+                {name: "Reverse Flyes", muscle: "Back", equipment: "Dumbbells"},
+                {name: "Machine Rows", muscle: "Back", equipment: "Machine"},
+                {name: "Inverted Rows", muscle: "Back", equipment: "Bodyweight"},
+                {name: "Straight Arm Pulldowns", muscle: "Back", equipment: "Cable"},
+                {name: "Rack Pulls", muscle: "Back", equipment: "Barbell"},
+                {name: "Meadows Rows", muscle: "Back", equipment: "Barbell"},
+                {name: "Seal Rows", muscle: "Back", equipment: "Barbell"},
+
+                // Leg Exercises (Quads)
+                {name: "Barbell Back Squat", muscle: "Legs", equipment: "Barbell"},
+                {name: "Barbell Front Squat", muscle: "Legs", equipment: "Barbell"},
+                {name: "High Bar Squat", muscle: "Legs", equipment: "Barbell"},
+                {name: "Low Bar Squat", muscle: "Legs", equipment: "Barbell"},
+                {name: "Goblet Squat", muscle: "Legs", equipment: "Dumbbells"},
+                {name: "Dumbbell Squat", muscle: "Legs", equipment: "Dumbbells"},
+                {name: "Hack Squat", muscle: "Legs", equipment: "Machine"},
                 {name: "Leg Press", muscle: "Legs", equipment: "Machine"},
                 {name: "Leg Extensions", muscle: "Legs", equipment: "Machine"},
-                {name: "Leg Curls", muscle: "Legs", equipment: "Machine"},
-                {name: "Calf Raises", muscle: "Legs", equipment: "Bodyweight"},
-                {name: "Shoulder Press", muscle: "Shoulders", equipment: "Dumbbells"},
-                {name: "Military Press", muscle: "Shoulders", equipment: "Barbell"},
-                {name: "Lateral Raises", muscle: "Shoulders", equipment: "Dumbbells"},
-                {name: "Front Raises", muscle: "Shoulders", equipment: "Dumbbells"},
-                {name: "Rear Delt Flyes", muscle: "Shoulders", equipment: "Dumbbells"},
+                {name: "Bulgarian Split Squats", muscle: "Legs", equipment: "Dumbbells"},
+                {name: "Walking Lunges", muscle: "Legs", equipment: "Dumbbells"},
+                {name: "Reverse Lunges", muscle: "Legs", equipment: "Dumbbells"},
+                {name: "Forward Lunges", muscle: "Legs", equipment: "Dumbbells"},
+                {name: "Lateral Lunges", muscle: "Legs", equipment: "Dumbbells"},
+                {name: "Step-ups", muscle: "Legs", equipment: "Dumbbells"},
+                {name: "Pistol Squats", muscle: "Legs", equipment: "Bodyweight"},
+                {name: "Jump Squats", muscle: "Legs", equipment: "Bodyweight"},
+                {name: "Sissy Squats", muscle: "Legs", equipment: "Bodyweight"},
+                {name: "Wall Sits", muscle: "Legs", equipment: "Bodyweight"},
+
+                // Leg Exercises (Hamstrings & Glutes)
+                {name: "Romanian Deadlifts", muscle: "Legs", equipment: "Barbell"},
+                {name: "Stiff Leg Deadlifts", muscle: "Legs", equipment: "Barbell"},
+                {name: "Good Mornings", muscle: "Legs", equipment: "Barbell"},
+                {name: "Lying Leg Curls", muscle: "Legs", equipment: "Machine"},
+                {name: "Seated Leg Curls", muscle: "Legs", equipment: "Machine"},
+                {name: "Standing Leg Curls", muscle: "Legs", equipment: "Machine"},
+                {name: "Nordic Curls", muscle: "Legs", equipment: "Bodyweight"},
+                {name: "Glute Ham Raises", muscle: "Legs", equipment: "Machine"},
+                {name: "Hip Thrusts", muscle: "Legs", equipment: "Barbell"},
+                {name: "Barbell Glute Bridge", muscle: "Legs", equipment: "Barbell"},
+                {name: "Single Leg Glute Bridge", muscle: "Legs", equipment: "Bodyweight"},
+                {name: "Cable Pull Throughs", muscle: "Legs", equipment: "Cable"},
+                {name: "Kickbacks", muscle: "Legs", equipment: "Cable"},
+                {name: "Reverse Hyperextensions", muscle: "Legs", equipment: "Machine"},
+
+                // Calves
+                {name: "Standing Calf Raises", muscle: "Calves", equipment: "Machine"},
+                {name: "Seated Calf Raises", muscle: "Calves", equipment: "Machine"},
+                {name: "Calf Press on Leg Press", muscle: "Calves", equipment: "Machine"},
+                {name: "Single Leg Calf Raises", muscle: "Calves", equipment: "Bodyweight"},
+                {name: "Donkey Calf Raises", muscle: "Calves", equipment: "Machine"},
+
+                // Shoulder Exercises
+                {name: "Barbell Overhead Press", muscle: "Shoulders", equipment: "Barbell"},
+                {name: "Seated Barbell Press", muscle: "Shoulders", equipment: "Barbell"},
+                {name: "Standing Military Press", muscle: "Shoulders", equipment: "Barbell"},
+                {name: "Push Press", muscle: "Shoulders", equipment: "Barbell"},
+                {name: "Behind the Neck Press", muscle: "Shoulders", equipment: "Barbell"},
+                {name: "Dumbbell Shoulder Press", muscle: "Shoulders", equipment: "Dumbbells"},
+                {name: "Seated Dumbbell Press", muscle: "Shoulders", equipment: "Dumbbells"},
                 {name: "Arnold Press", muscle: "Shoulders", equipment: "Dumbbells"},
+                {name: "Lateral Raises", muscle: "Shoulders", equipment: "Dumbbells"},
+                {name: "Cable Lateral Raises", muscle: "Shoulders", equipment: "Cable"},
+                {name: "Machine Lateral Raises", muscle: "Shoulders", equipment: "Machine"},
+                {name: "Front Raises", muscle: "Shoulders", equipment: "Dumbbells"},
+                {name: "Barbell Front Raises", muscle: "Shoulders", equipment: "Barbell"},
+                {name: "Plate Front Raises", muscle: "Shoulders", equipment: "Dumbbells"},
+                {name: "Rear Delt Flyes", muscle: "Shoulders", equipment: "Dumbbells"},
+                {name: "Bent Over Lateral Raises", muscle: "Shoulders", equipment: "Dumbbells"},
+                {name: "Reverse Pec Deck", muscle: "Shoulders", equipment: "Machine"},
+                {name: "Face Pulls", muscle: "Shoulders", equipment: "Cable"},
                 {name: "Upright Rows", muscle: "Shoulders", equipment: "Barbell"},
-                {name: "Shrugs", muscle: "Shoulders", equipment: "Dumbbells"},
-                {name: "Bicep Curls", muscle: "Arms", equipment: "Dumbbells"},
-                {name: "Hammer Curls", muscle: "Arms", equipment: "Dumbbells"},
-                {name: "Barbell Curls", muscle: "Arms", equipment: "Barbell"},
-                {name: "Cable Curls", muscle: "Arms", equipment: "Cable"},
-                {name: "Tricep Dips", muscle: "Arms", equipment: "Bodyweight"},
-                {name: "Overhead Tricep Extension", muscle: "Arms", equipment: "Dumbbells"},
-                {name: "Tricep Kickbacks", muscle: "Arms", equipment: "Dumbbells"},
-                {name: "Close Grip Bench Press", muscle: "Arms", equipment: "Barbell"},
-                {name: "Cable Tricep Pushdowns", muscle: "Arms", equipment: "Cable"},
-                {name: "Skull Crushers", muscle: "Arms", equipment: "Barbell"}
+                {name: "Cable Upright Rows", muscle: "Shoulders", equipment: "Cable"},
+                {name: "Barbell Shrugs", muscle: "Shoulders", equipment: "Barbell"},
+                {name: "Dumbbell Shrugs", muscle: "Shoulders", equipment: "Dumbbells"},
+                {name: "Cable Shrugs", muscle: "Shoulders", equipment: "Cable"},
+                {name: "Pike Push-ups", muscle: "Shoulders", equipment: "Bodyweight"},
+                {name: "Handstand Push-ups", muscle: "Shoulders", equipment: "Bodyweight"},
+
+                // Biceps
+                {name: "Barbell Curls", muscle: "Biceps", equipment: "Barbell"},
+                {name: "EZ Bar Curls", muscle: "Biceps", equipment: "Barbell"},
+                {name: "Close Grip EZ Bar Curls", muscle: "Biceps", equipment: "Barbell"},
+                {name: "Wide Grip Barbell Curls", muscle: "Biceps", equipment: "Barbell"},
+                {name: "Dumbbell Curls", muscle: "Biceps", equipment: "Dumbbells"},
+                {name: "Alternating Dumbbell Curls", muscle: "Biceps", equipment: "Dumbbells"},
+                {name: "Hammer Curls", muscle: "Biceps", equipment: "Dumbbells"},
+                {name: "Cross Body Hammer Curls", muscle: "Biceps", equipment: "Dumbbells"},
+                {name: "Incline Dumbbell Curls", muscle: "Biceps", equipment: "Dumbbells"},
+                {name: "Concentration Curls", muscle: "Biceps", equipment: "Dumbbells"},
+                {name: "Preacher Curls", muscle: "Biceps", equipment: "Barbell"},
+                {name: "Machine Preacher Curls", muscle: "Biceps", equipment: "Machine"},
+                {name: "Cable Curls", muscle: "Biceps", equipment: "Cable"},
+                {name: "High Cable Curls", muscle: "Biceps", equipment: "Cable"},
+                {name: "Spider Curls", muscle: "Biceps", equipment: "Barbell"},
+                {name: "Drag Curls", muscle: "Biceps", equipment: "Barbell"},
+                {name: "21s", muscle: "Biceps", equipment: "Barbell"},
+                {name: "Zottman Curls", muscle: "Biceps", equipment: "Dumbbells"},
+
+                // Triceps
+                {name: "Close Grip Bench Press", muscle: "Triceps", equipment: "Barbell"},
+                {name: "Dumbbell Tricep Press", muscle: "Triceps", equipment: "Dumbbells"},
+                {name: "Overhead Tricep Extension", muscle: "Triceps", equipment: "Dumbbells"},
+                {name: "Cable Overhead Extension", muscle: "Triceps", equipment: "Cable"},
+                {name: "Skull Crushers", muscle: "Triceps", equipment: "Barbell"},
+                {name: "EZ Bar Skull Crushers", muscle: "Triceps", equipment: "Barbell"},
+                {name: "Dumbbell Skull Crushers", muscle: "Triceps", equipment: "Dumbbells"},
+                {name: "Cable Tricep Pushdowns", muscle: "Triceps", equipment: "Cable"},
+                {name: "Rope Tricep Pushdowns", muscle: "Triceps", equipment: "Cable"},
+                {name: "Single Arm Pushdowns", muscle: "Triceps", equipment: "Cable"},
+                {name: "Reverse Grip Pushdowns", muscle: "Triceps", equipment: "Cable"},
+                {name: "Tricep Kickbacks", muscle: "Triceps", equipment: "Dumbbells"},
+                {name: "Tricep Dips", muscle: "Triceps", equipment: "Bodyweight"},
+                {name: "Bench Dips", muscle: "Triceps", equipment: "Bodyweight"},
+                {name: "Diamond Push-ups", muscle: "Triceps", equipment: "Bodyweight"},
+                {name: "JM Press", muscle: "Triceps", equipment: "Barbell"},
+                {name: "Tate Press", muscle: "Triceps", equipment: "Dumbbells"},
+
+                // Forearms
+                {name: "Wrist Curls", muscle: "Forearms", equipment: "Barbell"},
+                {name: "Reverse Wrist Curls", muscle: "Forearms", equipment: "Barbell"},
+                {name: "Farmer's Walk", muscle: "Forearms", equipment: "Dumbbells"},
+                {name: "Plate Pinch", muscle: "Forearms", equipment: "Dumbbells"},
+                {name: "Reverse Curls", muscle: "Forearms", equipment: "Barbell"},
+                {name: "Hammer Curls", muscle: "Forearms", equipment: "Dumbbells"},
+
+                // Core/Abs
+                {name: "Crunches", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Sit-ups", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Decline Sit-ups", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Cable Crunches", muscle: "Abs", equipment: "Cable"},
+                {name: "Rope Crunches", muscle: "Abs", equipment: "Cable"},
+                {name: "Hanging Leg Raises", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Hanging Knee Raises", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Ab Wheel Rollouts", muscle: "Abs", equipment: "Ab Wheel"},
+                {name: "Plank", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Side Plank", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Russian Twists", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Bicycle Crunches", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Mountain Climbers", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Leg Raises", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Flutter Kicks", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "V-ups", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Woodchoppers", muscle: "Abs", equipment: "Cable"},
+                {name: "Pallof Press", muscle: "Abs", equipment: "Cable"},
+                {name: "Dead Bug", muscle: "Abs", equipment: "Bodyweight"},
+                {name: "Bird Dog", muscle: "Abs", equipment: "Bodyweight"},
+
+                // Compound/Full Body
+                {name: "Power Cleans", muscle: "Full Body", equipment: "Barbell"},
+                {name: "Clean and Press", muscle: "Full Body", equipment: "Barbell"},
+                {name: "Hang Cleans", muscle: "Full Body", equipment: "Barbell"},
+                {name: "Snatch", muscle: "Full Body", equipment: "Barbell"},
+                {name: "Thrusters", muscle: "Full Body", equipment: "Barbell"},
+                {name: "Burpees", muscle: "Full Body", equipment: "Bodyweight"},
+                {name: "Turkish Get-ups", muscle: "Full Body", equipment: "Dumbbells"},
+                {name: "Kettlebell Swings", muscle: "Full Body", equipment: "Kettlebell"},
+                {name: "Man Makers", muscle: "Full Body", equipment: "Dumbbells"}
             ];
 
             let workouts = [];
@@ -1229,45 +1460,92 @@
                 document.getElementById('loggingModal').classList.add('active');
             }
 
+            function getLastWorkoutData(exerciseName) {
+                // Find the most recent completed workout that includes this exercise
+                const workoutsWithExercise = history
+                    .filter(w => w.exercises.some(ex => ex.name === exerciseName))
+                    .sort((a, b) => new Date(b.completedAt) - new Date(a.completedAt));
+                
+                if (workoutsWithExercise.length === 0) return null;
+                
+                const lastWorkout = workoutsWithExercise[0];
+                const exercise = lastWorkout.exercises.find(ex => ex.name === exerciseName);
+                
+                return {
+                    date: new Date(lastWorkout.completedAt).toLocaleDateString('en-GB', { 
+                        day: 'numeric', 
+                        month: 'short', 
+                        year: 'numeric' 
+                    }),
+                    sets: exercise.sets
+                };
+            }
+
             function renderLogging() {
                 document.getElementById('loggingTitle').textContent = `Log: ${activeWorkout.name}`;
                 const container = document.getElementById('loggingExercises');
                 
-                container.innerHTML = activeWorkout.exercises.map((ex, exIdx) => `
-                    <div class="selected-exercise-item">
-                        <div class="exercise-header">
-                            <div>
-                                <div class="selected-exercise-name">${ex.name}</div>
-                                <div class="selected-exercise-details">${ex.muscle} • ${ex.equipment}</div>
-                            </div>
-                            <button class="progress-btn" onclick="app.showProgress('${ex.name}')">📊</button>
-                        </div>
-                        
-                        <div class="sets-header">
-                            <span class="sets-label">Sets & Reps</span>
-                            <button class="add-set-btn" onclick="app.addLogSet(${exIdx})">+ Add</button>
-                        </div>
-                        
-                        <div>
-                            ${ex.sets.map((set, setIdx) => `
-                                <div class="set-item ${set.completed ? 'completed' : ''}">
-                                    <input type="checkbox" class="set-checkbox" ${set.completed ? 'checked' : ''}
-                                           onchange="app.toggleSet(${exIdx}, ${setIdx}, this.checked)">
-                                    <span class="set-label">Set ${setIdx + 1}</span>
-                                    <input type="number" class="set-input" placeholder="Reps" value="${set.reps || ''}"
-                                           onchange="app.updateLogSet(${exIdx}, ${setIdx}, 'reps', this.value)">
-                                    <span style="color: #9ca3af; font-size: 0.8rem;">reps</span>
-                                    ${ex.equipment !== 'Bodyweight' ? `
-                                        <input type="number" class="set-input" placeholder="Weight" value="${set.weight || ''}"
-                                               onchange="app.updateLogSet(${exIdx}, ${setIdx}, 'weight', this.value)">
-                                        <span style="color: #9ca3af; font-size: 0.8rem;">kg</span>
-                                    ` : ''}
-                                    <button class="remove-btn" onclick="app.removeLogSet(${exIdx}, ${setIdx})">×</button>
+                container.innerHTML = activeWorkout.exercises.map((ex, exIdx) => {
+                    const lastWorkout = getLastWorkoutData(ex.name);
+                    
+                    let lastWorkoutHtml = '';
+                    if (lastWorkout) {
+                        lastWorkoutHtml = `
+                            <div class="last-workout-reference">
+                                <div class="last-workout-header">
+                                    📊 Last Workout - ${lastWorkout.date}
+                                    <button class="copy-last-btn" onclick="app.copyLastWorkout(${exIdx})">📋 Copy</button>
                                 </div>
-                            `).join('')}
+                                <div class="last-workout-sets">
+                                    ${lastWorkout.sets.map((set, i) => `
+                                        <div>
+                                            <span class="last-workout-badge">Set ${i + 1}</span>
+                                            <span>${set.reps} reps ${ex.equipment !== 'Bodyweight' ? `@ ${set.weight} kg` : ''}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    return `
+                        <div class="selected-exercise-item">
+                            <div class="exercise-header">
+                                <div>
+                                    <div class="selected-exercise-name">${ex.name}</div>
+                                    <div class="selected-exercise-details">${ex.muscle} • ${ex.equipment}</div>
+                                </div>
+                                <button class="progress-btn" onclick="app.showProgress('${ex.name}')">📊</button>
+                            </div>
+                            
+                            ${lastWorkoutHtml}
+                            
+                            <div class="sets-header">
+                                <span class="sets-label">Sets & Reps</span>
+                                <button class="add-set-btn" onclick="app.addLogSet(${exIdx})">+ Add</button>
+                            </div>
+                            
+                            <div>
+                                ${ex.sets.map((set, setIdx) => `
+                                    <div class="set-item ${set.completed ? 'completed' : ''}">
+                                        <input type="checkbox" class="set-checkbox" ${set.completed ? 'checked' : ''}
+                                               onchange="app.toggleSet(${exIdx}, ${setIdx}, this.checked)">
+                                        <span class="set-label">Set ${setIdx + 1}</span>
+                                        <input type="number" class="set-input" placeholder="Reps" value="${set.reps || ''}"
+                                               onchange="app.updateLogSet(${exIdx}, ${setIdx}, 'reps', this.value)">
+                                        <span style="color: #9ca3af; font-size: 0.8rem;">reps</span>
+                                        ${ex.equipment !== 'Bodyweight' ? `
+                                            <input type="number" class="set-input" placeholder="Weight" value="${set.weight || ''}"
+                                                   onchange="app.updateLogSet(${exIdx}, ${setIdx}, 'weight', this.value)">
+                                            <span style="color: #9ca3af; font-size: 0.8rem;">kg</span>
+                                        ` : ''}
+                                        <button class="remove-btn" onclick="app.removeLogSet(${exIdx}, ${setIdx})">×</button>
+                                    </div>
+                                `).join('')}
+                            </div>
                         </div>
-                    </div>
-                `).join('');
+                    `;
+                }).join('');
             }
 
             function addLogSet(exIdx) {
@@ -1286,6 +1564,22 @@
 
             function toggleSet(exIdx, setIdx, checked) {
                 activeWorkout.exercises[exIdx].sets[setIdx].completed = checked;
+            }
+
+            function copyLastWorkout(exIdx) {
+                const exercise = activeWorkout.exercises[exIdx];
+                const lastWorkout = getLastWorkoutData(exercise.name);
+                
+                if (!lastWorkout) return;
+                
+                // Clear existing sets and copy from last workout
+                activeWorkout.exercises[exIdx].sets = lastWorkout.sets.map(set => ({
+                    reps: set.reps,
+                    weight: set.weight,
+                    completed: false
+                }));
+                
+                renderLogging();
             }
 
             function completeWorkout() {
@@ -1577,6 +1871,7 @@
                 removeLogSet,
                 updateLogSet,
                 toggleSet,
+                copyLastWorkout,
                 completeWorkout,
                 showProgress,
                 displayProgress,
